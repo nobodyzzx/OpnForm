@@ -146,14 +146,8 @@ return [
     /**
      * Self-hosted license configuration.
      * Maps License API feature keys to application feature keys from the 'features' section above.
+     * When empty, all features are enabled on self-hosted instances.
      */
-    'self_hosted_features' => [
-        'sso' => ['sso.saml', 'sso.ldap'],
-        'multiOrg' => ['workspaces.multiple', 'multi_user.roles'],
-        'whitelabel' => ['branding.removal', 'branding.advanced', 'white_label'],
-        'custom_smtp' => ['custom_smtp'],
-        'audit_logs' => ['audit_logs', 'compliance_features'],
-        'external_storage' => ['external_storage'],
-        'custom_code' => ['custom_code', 'custom_css'],
-    ],
+    'self_hosted_features' => [],
 ];
+

@@ -5,6 +5,8 @@ services:
     container_name: opnform-api
     volumes: &api-environment-volumes
       - opnform_storage:/usr/share/nginx/html/storage:rw
+      - ./api/config/plans.php:/usr/share/nginx/html/config/plans.php:ro
+      - ./api/app/Service/Billing/BillingStateResolver.php:/usr/share/nginx/html/app/Service/Billing/BillingStateResolver.php:ro
     environment: &api-env
       APP_NAME: OpnForm
       APP_ENV: production
@@ -15,6 +17,7 @@ services:
       FRONT_API_SECRET: ${SHARED_API_SECRET}
       LOG_CHANNEL: stack
       LOG_LEVEL: error
+      CUSTOM_CODE_ENABLE_SELF_HOSTED: ${CUSTOM_CODE_ENABLE_SELF_HOSTED:-true}
       # Database settings
       DB_HOST: db
       REDIS_HOST: redis

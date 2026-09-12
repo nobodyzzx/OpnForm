@@ -161,21 +161,18 @@ class BillingStateResolver
 
     /**
      * Build a BillingState for self-hosted instances.
-     * With an active license → Self-hosted tier.
-     * Without a license → Pro tier (basic self-hosted features still work).
+     * Grants full Self-hosted tier capabilities.
      */
     private function selfHostedState(?int $workspaceId): BillingState
     {
-        $hasLicense = config('app.self_hosted')
-            && app(LicenseService::class)->checkLicense()->isActive();
-
         return new BillingState(
             workspaceId: $workspaceId,
-            tier: $hasLicense ? PlanTier::SELF_HOSTED : PlanTier::PRO,
+            tier: PlanTier::SELF_HOSTED,
             isPaid: true,
-            hasLicense: $hasLicense,
+            hasLicense: true,
         );
     }
+
 
     private function compareStates(BillingState $left, BillingState $right): int
     {
