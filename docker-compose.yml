@@ -27,9 +27,8 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_TTL: "10080"
       # Comma-separated IP/CIDR of the reverse proxy in front of the ingress
-      # container (Dokploy/Traefik). Never use *. Set after first deploy once
-      # the app's Docker network subnet is known.
-      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-}
+      # container (Dokploy/Traefik). Defaults to Docker private subnets.
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
       ADMIN_EMAILS: ${ADMIN_EMAILS:-}
       MAIL_MAILER: ${MAIL_MAILER:-log}
       MAIL_HOST: ${MAIL_HOST:-}
@@ -95,6 +94,7 @@ services:
     environment:
       NUXT_PUBLIC_APP_URL: https://${APP_DOMAIN}
       NUXT_PUBLIC_API_BASE: https://${APP_DOMAIN}/api
+      NUXT_PRIVATE_API_BASE: ${NUXT_PRIVATE_API_BASE:-http://ingress/api}
       NUXT_API_SECRET: ${SHARED_API_SECRET}
       NUXT_PUBLIC_ENV: production
     depends_on:
