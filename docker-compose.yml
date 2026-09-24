@@ -3,6 +3,7 @@ services:
   api: &api-environment
     image: jhumanj/opnform-api:latest
     container_name: opnform-api
+    restart: unless-stopped
     volumes: &api-environment-volumes
       - opnform_storage:/usr/share/nginx/html/storage:rw
       - ./api/config/plans.php:/usr/share/nginx/html/config/plans.php:ro
@@ -61,6 +62,7 @@ services:
   api-worker:
     <<: *api-environment
     container_name: opnform-api-worker
+    restart: unless-stopped
     command: ["php", "artisan", "queue:work"]
     environment:
       <<: *api-env
@@ -76,6 +78,7 @@ services:
   api-scheduler:
     <<: *api-environment
     container_name: opnform-api-scheduler
+    restart: unless-stopped
     command: ["php", "artisan", "schedule:work"]
     environment:
       <<: *api-env
@@ -94,6 +97,7 @@ services:
   ui:
     image: jhumanj/opnform-client:latest
     container_name: opnform-client
+    restart: unless-stopped
     environment:
       NUXT_PUBLIC_APP_URL: https://${APP_DOMAIN}
       NUXT_PUBLIC_API_BASE: https://${APP_DOMAIN}/api
@@ -114,6 +118,7 @@ services:
   redis:
     image: redis:7
     container_name: opnform-redis
+    restart: unless-stopped
     volumes:
       - redis-data:/data
     healthcheck:
@@ -124,6 +129,7 @@ services:
   db:
     image: postgres:16
     container_name: opnform-db
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_DATABASE:-forge}
       POSTGRES_USER: ${DB_USERNAME:-forge}
@@ -138,6 +144,7 @@ services:
   ingress:
     image: nginx:1
     container_name: opnform-ingress
+    restart: unless-stopped
     volumes:
       - ./docker/nginx.conf:/etc/nginx/templates/default.conf.template
     environment:
